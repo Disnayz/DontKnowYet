@@ -11,4 +11,8 @@ public class HelloWorldController {
         return "helloworld-form";
     }
     // controller to process form
+    @RequestMapping("/processForm")
+    public String processForm(){
+        return "helloworld";
+    }
 }
