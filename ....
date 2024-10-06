@@ -1,0 +1,225 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+class SolutionTest {
+    @Test
+    void test_ok() {
+        // działaja
+        assertEquals("12", Main.sumStrings("5", "7"));
+        assertEquals("200", Main.sumStrings("120", "80"));
+        assertEquals("579", Main.sumStrings("123", "456"));
+        assertEquals("333", Main.sumStrings("277", "56"));
+        assertEquals("2024", Main.sumStrings("2000", "24"));
+        assertEquals("550", Main.sumStrings("200", "350"));
+        assertEquals("2", Main.sumStrings("1", "1"));
+    }
+    @Test
+    void test_ok2() {
+        // działaja
+        assertEquals("-2", Main.subtractStrings("5", "7"));
+        assertEquals("100", Main.subtractStrings("200", "100"));
+        assertEquals("90", Main.subtractStrings("213", "123"));
+        assertEquals("-13", Main.subtractStrings("-5", "7"));
+    }
+
+    @Test
+    void test_minus_w_stringu(){
+        assertEquals("-13", Main.subtractStrings("-5", "7"));
+        assertEquals("-13", Main.subtractStrings("-502", "-75"));
+        assertEquals("-13", Main.subtractStrings("-5", "7"));
+        assertEquals("-333", Main.subtractStrings("123", "-456"));
+    }
+                // litery w a
+        @Test
+        void test_litery_w_a() {
+        assertEquals("456", Main.sumStrings("aaa", "456"));
+        assertEquals("456", Main.sumStrings("1x23", "456"));
+        assertEquals("456", Main.sumStrings("12hu3", "456"));
+        }
+
+        @Test
+        void test_litery_w_a_odejmowanie() {
+        assertEquals("456", Main.subtractStrings("aaa", "456"));
+        assertEquals("456", Main.subtractStrings("1x23", "456"));
+        assertEquals("456", Main.subtractStrings("12hu3", "456"));
+    }
+
+        @Test
+        void test_litery_w_b() {
+        assertEquals("123", Main.sumStrings("123", "45das6"));
+        assertEquals("123", Main.sumStrings("123", "45sasa6"));
+        assertEquals("123", Main.sumStrings("123", "4saa56"));
+    }
+        @Test
+        void test_litery_w_b_odejmowanie() {
+        assertEquals("123", Main.subtractStrings("123", "45das6"));
+        assertEquals("123", Main.subtractStrings("123", "45sasa6"));
+        assertEquals("123", Main.subtractStrings("123", "4saa56"));
+    }
+        @Test
+        void test_cyfry_z_zerem_odejmowanie() {
+            assertEquals("456", Main.subtractStrings("000", "456"));
+            assertEquals("123", Main.subtractStrings("123", "000"));
+    }
+
+        @Test
+        void test_cyfry_na_minusie() {
+        assertEquals("-579", Main.sumStrings("-123", "-456"));
+        assertEquals("-333", Main.sumStrings("123", "-456"));
+    }
+
+        @Test
+        void test_cyfry_z_zerem() {
+        assertEquals("456", Main.sumStrings("000", "456"));
+        assertEquals("123", Main.sumStrings("123", "000"));
+    }
+        @Test
+        void test_int_zamiast_string() {
+        assertEquals("579", Main.sumStrings(String.valueOf(123), "456"));
+        assertEquals("579", Main.sumStrings("123", "456"));
+        assertEquals("579", Main.sumStrings("123", "456"));
+    }
+    @Test
+    void test_BigInt() {
+        assertEquals("579", Main.sumStrings("242332232432658768768768678678686", "456"));
+        assertEquals("579", Main.sumStrings("123", "456000000000000000004234223000000"));
+        assertEquals("579", Main.sumStrings("123086576657654733535332424234242", "456"));
+    }
+    @Test
+    void test_znaki_specjalne() {// znaki specjalne
+        assertEquals("579", Main.sumStrings("1$#%$23", "456"));
+        assertEquals("579", Main.sumStrings("123", "45*&(*(6"));
+        assertEquals("579", Main.sumStrings("123!!", "456"));
+    }
+
+    void test_null_input() {
+        assertEquals("579", Main.sumStrings(null, "456"));
+        assertEquals("579", Main.sumStrings("123", null));
+    }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+public class Main {
+    public static String sumStrings(String a, String b) {
+        if(a.startsWith("0")){
+            a = a.replaceFirst("0", " ");
+            a = a.trim();
+        }
+        if(b.startsWith("0")){
+            b = b.replaceFirst("0", " ");
+            b = b.trim();
+        }
+        String resultA = "";
+        String resultB = "";
+        int decimals = 0;
+        if(a.length() > b.length()){
+            decimals = a.length() - b.length();
+            for(int i = 1; i <= decimals; i++){
+                resultB += "0";
+            }
+            resultB += b;
+            resultA = a;
+        }
+        else if(a.length() < b.length()){
+            decimals = b.length() - a.length();
+            for(int i = 1; i <= decimals; i++){
+                resultA += "0";
+
+            }
+            resultA += a;
+            resultB = b;
+        }
+        else{
+            resultB = b;
+            resultA = a;
+        }
+
+        String result = "";
+        int additional = 0;
+        for(int i = resultA.length() - 1; i >= 0; i--){
+            int tempResult = Character.getNumericValue(resultA.charAt(i)) + Character.getNumericValue(resultB.charAt(i)) + additional;
+            if(tempResult >= 10){
+                additional = 1;
+                result += tempResult - 10;
+            }
+            else{
+                additional = 0;
+                result += tempResult;
+            }
+        }
+        if(additional == 1){
+            result += 1;
+        }
+
+        String returnedString = "";
+        for(int i = result.length() - 1; i >= 0; i--){
+            returnedString += result.charAt(i);
+        }
+        return returnedString;
+    }
+
+
+    public static String subtractStrings(String a, String b) {
+        if (a.startsWith("0")) {
+            a = a.replaceFirst("^0+(?!$)", "");
+        }
+        if (b.startsWith("0")) {
+            b = b.replaceFirst("^0+(?!$)", "");
+        }
+
+        if (a.length() < b.length() || (a.length() == b.length() && a.compareTo(b) < 0)) {
+            return "-" + subtractStrings(b, a);
+        }
+
+        String resultA = "";
+        String resultB = "";
+        int decimals = 0;
+
+        if (a.length() > b.length()) {
+            decimals = a.length() - b.length();
+            for (int i = 1; i <= decimals; i++) {
+                resultB += "0";
+            }
+            resultB += b;
+            resultA = a;
+        } else {
+            resultB = b;
+            resultA = a;
+        }
+
+        String result = "";
+        int borrow = 0;
+
+        for (int i = resultA.length() - 1; i >= 0; i--) {
+            int digitA = Character.getNumericValue(resultA.charAt(i));
+            int digitB = Character.getNumericValue(resultB.charAt(i)) + borrow;
+
+            if (digitA < digitB) {
+                digitA += 10;
+                borrow = 1;
+            } else {
+                borrow = 0;
+            }
+
+            result += (digitA - digitB);
+        }
+
+        String returnedString = "";
+        for (int i = result.length() - 1; i >= 0; i--) {
+            returnedString += result.charAt(i);
+        }
+        returnedString = returnedString.replaceFirst("^0+(?!$)", "");
+
+        return returnedString.isEmpty() ? "0" : returnedString;
+    }
+}
