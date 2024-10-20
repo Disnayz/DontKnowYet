@@ -3,7 +3,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-
+from selenium.common.exceptions import NoSuchElementException
 options = Options()
 options.add_argument("--window-size=1920,1080")
 
@@ -34,8 +34,10 @@ if current_url == expected_url:
 else:
     print("URL nie jest poprawny")
 
-logout = driver.find_element(By.ID, "Log out")
-logout.click()
+try:
+    logout_link = driver.find_element(By.XPATH, "//a[text()='Log out']")
+    print("Przycisk został znaleziony")
+except NoSuchElementException:
+    print("Przycisk nie został znaleziony")
 
 time.sleep(10)
-
