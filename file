@@ -1,1 +1,41 @@
+import time
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+
+options = Options()
+options.add_argument("--window-size=1920,1080")
+
+driver = webdriver.Chrome(options=options)
+
+driver.get("https://practicetestautomation.com/practice-test-login")
+
+username = driver.find_element(By.ID, "username")
+username.send_keys("student")
+
+password = driver.find_element(By.ID, "password")
+password.send_keys("Password123")
+
+submit = driver.find_element(By.ID, "submit")
+submit.click()
+
+result = "Logged In Successfully"
+if result in driver.page_source:
+    print('zalogowano')
+else:
+    print('niezalogowano')
+
+
+expected_url = "https://practicetestautomation.com/logged-in-successfully/"
+current_url = driver.current_url
+if current_url == expected_url:
+    print("URL jest poprawny")
+else:
+    print("URL nie jest poprawny")
+
+logout = driver.find_element(By.ID, "Log out")
+logout.click()
+
+time.sleep(10)
 
