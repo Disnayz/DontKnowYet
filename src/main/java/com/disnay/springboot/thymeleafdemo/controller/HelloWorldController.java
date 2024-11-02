@@ -30,5 +30,6 @@ public class HelloWorldController {
         // message to the model
         model.addAttribute("message",result);
         return "helloword";
+        // testtest
     }
 }
