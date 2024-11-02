@@ -29,7 +29,6 @@ public class HelloWorldController {
         String result = "Yo " + theName;
         // message to the model
         model.addAttribute("message",result);
-        return "helloword";
-        //test123
+        return "helloworld";
     }
 }
