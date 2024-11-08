@@ -3,6 +3,7 @@ package com.disnay.springboot.thymeleafdemo.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,7 +33,7 @@ public class HelloWorldController {
         model.addAttribute("message",result);
         return "helloworld";
     }
-    @RequestMapping("/processFormVersionThree")
+    @GetMapping("/processFormVersionThree")
     public String processFormVersionThree(@RequestParam("studentName")String theName, Model model){
 
         //convert the data to all caps
